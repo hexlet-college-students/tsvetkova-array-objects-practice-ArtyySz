@@ -150,6 +150,37 @@ function isGitName(names) {
   return name.split(' github.com/')[1];
 }
 
+// task 4 zd 2
+
+function isExperiencePers(time) {
+  const [,,,,,, exper] = time.trim().split('\n');
+  const one = exper.split(',');
+  const result = one.map((item) => item.split('-')).slice(1);
+  const result1 = result.map((arr) => {
+    arr[1] = arr[1].split(';')[0];
+    return arr;
+  });
+  const formatted = result1.map((date) => date.map((datess) => {
+    const [day, month, year] = datess.trim().split('.');
+    return `${month}.${year}`;
+  }));
+  return formatted;
+}
+
+// task 5 zd 2
+
+function sortedAcademy(academ) {
+  const [,,,,,,, academy] = academ.trim().split('\n');
+  const sort = academy.slice(11).split(';');
+  const sort1 = sort.map((item) => item.split(','));
+  const sort2 = sort1.map((item) => item[0].trim().toLowerCase());
+  const sorted = sort2.sort((a, b) => a.localeCompare(b));
+  return sorted.map((item) => {
+    const originalCase = sort1.find((el) => el[0].trim().toLowerCase() === item);
+    return originalCase[0].trim();
+  });
+}
+
 // task 2
 const candidateAssessment = (content) => {
   const name = getName(content);
@@ -162,11 +193,71 @@ const candidateAssessment = (content) => {
 
   const isName = isGitName(content);
   console.log(`GitHub nickname: ${isName.split(',')[0]}`);
+
+  const getExperience = isExperiencePers(content);
+  console.log(getExperience);
+
+  const sortAc = sortedAcademy(content);
+  console.log(`Education: ${sortAc.join(', ')}`);
 };
 
-// task 3
-const actorRating = (/* content */) => {
+// task 1 zd 3
 
+function getNominations(str) {
+  const [...nomin] = str.trim().split('\n');
+  const firstWords = nomin.map((str) => str.split(' ')[0]);
+  const count = firstWords.filter((word) => word === 'Награда').length;
+  return count;
+}
+
+function getRewards(str) {
+  const [...nomin] = str.trim().split('\n');
+  const firstWords = nomin.map((str) => str.split(' ')[0]);
+  const count = firstWords.filter((word) => word === 'Номинация').length;
+  return count;
+}
+
+// task 2 zd 3
+function nominations2003(movie) {
+  const [...years] = movie.trim().split('\n');
+  const year2003 = years.map((str) => (str.includes('2003') ? str.split('—')[4] : 0));
+  const deleteZero = year2003.filter((item) => item !== 0 && item !== '0');
+  const deleteRep = new Set(deleteZero);
+  return Array.from(deleteRep);
+}
+
+// task 3 zd 2
+function percentageOfAwards(rew) {
+  const str = rew.trim().split('\n').length;
+  return str;
+}
+
+// task 4 zd 2
+function mostSuccessfulMovie(movie) {
+  const [...mov] = movie.trim().split('\n');
+  const lastMov = mov.map((str) => str.split('—')[4]);
+  const wordCount = lastMov.reduce((acc, word) => {
+    acc[word] = (acc[word] || 0) + 1;
+    return acc;
+  }, {});
+  const mostRepeat = Object.keys(wordCount).reduce((a, b) => (wordCount[a] > wordCount[b] ? a : b));
+  return mostRepeat;
+}
+
+// task 3
+const actorRating = (content) => {
+  const nominationsOrRewards = getNominations(content);
+  const rewardsOrNominations = getRewards(content);
+  console.log(`Awards: Rewards: ${nominationsOrRewards}, Nominations: ${rewardsOrNominations}`);
+
+  const moviesTop2003 = nominations2003(content);
+  console.log(`Movies 2003:${moviesTop2003}`);
+
+  const precent = percentageOfAwards(content);
+  console.log(`Rewards percent: ${Math.floor((nominationsOrRewards / precent) * 100)}%`);
+
+  const topMovie = mostSuccessfulMovie(content);
+  console.log(`Most successful movie:${topMovie}`);
 };
 
 export { tableParsing, candidateAssessment, actorRating };
