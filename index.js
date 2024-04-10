@@ -45,6 +45,7 @@ function convertToObject(content) {
   const appsList = apps.reduce((acc, messenger) => {
     const data = messenger.split(';');
     acc.push(data.reduce((acc2, value, i) => {
+      // eslint-disable-next-line
       acc2[keysList[i]] = parseFloat(value, 10) || value;
       return acc2;
     }, {}));
@@ -89,7 +90,9 @@ const compareTask5 = (a, b) => (a[1] > b[1] ? -1 : a[b[1] === 1 ? 0 : 1]);
 
 const getDeveloper = (data) => {
   const temp = data.map(({ developer }) => developer);
+  // eslint-disable-next-line
   const obj = temp.reduce((objDev, dev) => {
+    // eslint-disable-next-line
     objDev[dev] = (objDev[dev] || 0) + 1;
     return objDev;
   }, {});
@@ -157,11 +160,12 @@ function isExperiencePers(time) {
   const one = exper.split(',');
   const result = one.map((item) => item.split('-')).slice(1);
   const result1 = result.map((arr) => {
+    // eslint-disable-next-line
     arr[1] = arr[1].split(';')[0];
     return arr;
   });
   const formatted = result1.map((date) => date.map((datess) => {
-    const [day, month, year] = datess.trim().split('.');
+    const [, month, year] = datess.trim().split('.');
     return `${month}.${year}`;
   }));
   return formatted;
@@ -205,13 +209,13 @@ const candidateAssessment = (content) => {
 
 function getNominations(str) {
   const [...nomin] = str.trim().split('\n');
-  const firstWords = nomin.map((str) => str.split(' ')[0]);
+  const firstWords = nomin.map((str1) => str1.split(' ')[0]);
   const count = firstWords.filter((word) => word === 'Награда').length;
   return count;
 }
 
-function getRewards(str) {
-  const [...nomin] = str.trim().split('\n');
+function getRewards(str1) {
+  const [...nomin] = str1.trim().split('\n');
   const firstWords = nomin.map((str) => str.split(' ')[0]);
   const count = firstWords.filter((word) => word === 'Номинация').length;
   return count;
