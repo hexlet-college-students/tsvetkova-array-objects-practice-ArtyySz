@@ -226,13 +226,13 @@ function nominations2003(movie) {
   return Array.from(deleteRep);
 }
 
-// task 3 zd 2
+// task 3 zd 3
 function percentageOfAwards(rew) {
   const str = rew.trim().split('\n').length;
   return str;
 }
 
-// task 4 zd 2
+// task 4 zd 3
 function mostSuccessfulMovie(movie) {
   const [...mov] = movie.trim().split('\n');
   const lastMov = mov.map((str) => str.split('—')[4]);
